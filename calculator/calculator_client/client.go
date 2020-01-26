@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"io"
 	calcpb "learnings/grpc/calculator/calculator_pb"
 	"log"
 
@@ -17,13 +18,14 @@ func main() {
 	if err != nil {
 		log.Fatalln("could not connect:", err)
 	}
-	c := calcpb.NewSumServiceClient(cc)
+	c := calcpb.NewCalculatorServiceClient(cc)
 
 	// invoking grpc calls
-	doUnary(c)
+	// doUnary(c)
+	doServerStream(c)
 }
 
-func doUnary(c calcpb.SumServiceClient) {
+func doUnary(c calcpb.CalculatorServiceClient) {
 	fmt.Println("Starting to do Unary RPC!")
 	req := &calcpb.SumRequest{
 		Sum: &calcpb.Sum{
@@ -36,4 +38,26 @@ func doUnary(c calcpb.SumServiceClient) {
 		log.Fatalln("err invoking Sum RPC")
 	}
 	fmt.Println("The result is: ", res.Result)
+}
+
+func doServerStream(c calcpb.CalculatorServiceClient) {
+	fmt.Println("Starting to do Server Stream RPC!")
+	req := &calcpb.DecomposeRequest{
+		Number: 65535,
+	}
+	stream, err := c.Decompose(context.Background(), req)
+	if err != nil {
+		log.Fatalln("error while sending Decompose RPC call:", err)
+	}
+	for {
+		res, err := stream.Recv()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatalln("error while reading stream:", err)
+		}
+		result := res.GetResult()
+		fmt.Printf("Response from Decompose RPC: %v\n", result)
+	}
 }

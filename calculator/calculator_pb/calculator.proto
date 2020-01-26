@@ -15,6 +15,15 @@ message SumResponse {
     int64 result = 1;
 }
 
-service SumService {
+message DecomposeRequest {
+    int64 number = 1;
+}
+
+message DecomposeResponse {
+    int64 result = 1;
+}
+
+service CalculatorService {
     rpc Sum (SumRequest) returns (SumResponse);
+    rpc Decompose (DecomposeRequest) returns (stream DecomposeResponse);
 }

@@ -6,6 +6,7 @@ import (
 	calcpb "learnings/grpc/calculator/calculator_pb"
 	"log"
 	"net"
+	"time"
 
 	"google.golang.org/grpc"
 )
@@ -23,6 +24,26 @@ func (s *server) Sum(ctx context.Context, req *calcpb.SumRequest) (*calcpb.SumRe
 	return result, nil
 }
 
+func (s *server) Decompose(req *calcpb.DecomposeRequest, stream calcpb.CalculatorService_DecomposeServer) error {
+	n := req.GetNumber()
+	k := int64(2)
+	for n > 1 {
+		if n%k == 0 {
+			result := &calcpb.DecomposeResponse{
+				Result: k,
+			}
+			if err := stream.Send(result); err != nil {
+				log.Fatalln("error while sending Decompose RPC call:", err)
+			}
+			n = n / k
+			time.Sleep(time.Second)
+			continue
+		}
+		k++
+	}
+	return nil
+}
+
 func main() {
 	// port binding and GRPC server initialization
 	lis, err := net.Listen("tcp", "0.0.0.0:50051")
@@ -32,7 +53,7 @@ func main() {
 	s := grpc.NewServer()
 
 	// adding handlers
-	calcpb.RegisterSumServiceServer(s, &server{})
+	calcpb.RegisterCalculatorServiceServer(s, &server{})
 
 	// start server
 	fmt.Println("greet server started, listening on 50051")

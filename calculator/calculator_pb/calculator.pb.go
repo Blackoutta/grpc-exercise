@@ -149,10 +149,90 @@ func (m *SumResponse) GetResult() int64 {
 	return 0
 }
 
+type DecomposeRequest struct {
+	Number               int64    `protobuf:"varint,1,opt,name=number,proto3" json:"number,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DecomposeRequest) Reset()         { *m = DecomposeRequest{} }
+func (m *DecomposeRequest) String() string { return proto.CompactTextString(m) }
+func (*DecomposeRequest) ProtoMessage()    {}
+func (*DecomposeRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5b44e1cc294e667d, []int{3}
+}
+
+func (m *DecomposeRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DecomposeRequest.Unmarshal(m, b)
+}
+func (m *DecomposeRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DecomposeRequest.Marshal(b, m, deterministic)
+}
+func (m *DecomposeRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DecomposeRequest.Merge(m, src)
+}
+func (m *DecomposeRequest) XXX_Size() int {
+	return xxx_messageInfo_DecomposeRequest.Size(m)
+}
+func (m *DecomposeRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_DecomposeRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DecomposeRequest proto.InternalMessageInfo
+
+func (m *DecomposeRequest) GetNumber() int64 {
+	if m != nil {
+		return m.Number
+	}
+	return 0
+}
+
+type DecomposeResponse struct {
+	Result               int64    `protobuf:"varint,1,opt,name=result,proto3" json:"result,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DecomposeResponse) Reset()         { *m = DecomposeResponse{} }
+func (m *DecomposeResponse) String() string { return proto.CompactTextString(m) }
+func (*DecomposeResponse) ProtoMessage()    {}
+func (*DecomposeResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5b44e1cc294e667d, []int{4}
+}
+
+func (m *DecomposeResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DecomposeResponse.Unmarshal(m, b)
+}
+func (m *DecomposeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DecomposeResponse.Marshal(b, m, deterministic)
+}
+func (m *DecomposeResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DecomposeResponse.Merge(m, src)
+}
+func (m *DecomposeResponse) XXX_Size() int {
+	return xxx_messageInfo_DecomposeResponse.Size(m)
+}
+func (m *DecomposeResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_DecomposeResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DecomposeResponse proto.InternalMessageInfo
+
+func (m *DecomposeResponse) GetResult() int64 {
+	if m != nil {
+		return m.Result
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*Sum)(nil), "calculator.Sum")
 	proto.RegisterType((*SumRequest)(nil), "calculator.SumRequest")
 	proto.RegisterType((*SumResponse)(nil), "calculator.SumResponse")
+	proto.RegisterType((*DecomposeRequest)(nil), "calculator.DecomposeRequest")
+	proto.RegisterType((*DecomposeResponse)(nil), "calculator.DecomposeResponse")
 }
 
 func init() {
@@ -160,7 +240,7 @@ func init() {
 }
 
 var fileDescriptor_5b44e1cc294e667d = []byte{
-	// 184 bytes of a gzipped FileDescriptorProto
+	// 245 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xd2, 0x4c, 0x4e, 0xcc, 0x49,
 	0x2e, 0xcd, 0x49, 0x2c, 0xc9, 0x2f, 0xd2, 0x47, 0x30, 0xe3, 0x0b, 0x92, 0x90, 0x78, 0x7a, 0x05,
 	0x45, 0xf9, 0x25, 0xf9, 0x42, 0x5c, 0x08, 0x11, 0x25, 0x5d, 0x2e, 0xe6, 0xe0, 0xd2, 0x5c, 0x21,
@@ -169,10 +249,14 @@ var fileDescriptor_5b44e1cc294e667d = []byte{
 	0x2d, 0x2c, 0x4d, 0x2d, 0x2e, 0x11, 0x52, 0xe4, 0x62, 0x2e, 0x2e, 0xcd, 0x05, 0x6b, 0xe2, 0x36,
 	0xe2, 0xd7, 0x43, 0xb2, 0x08, 0xa4, 0x08, 0x24, 0xa7, 0xa4, 0xca, 0xc5, 0x0d, 0xd6, 0x50, 0x5c,
 	0x90, 0x9f, 0x57, 0x9c, 0x2a, 0x24, 0xc6, 0xc5, 0x56, 0x94, 0x5a, 0x5c, 0x9a, 0x53, 0x02, 0xb5,
-	0x09, 0xca, 0x33, 0x72, 0x01, 0x9b, 0x1b, 0x9c, 0x5a, 0x54, 0x96, 0x99, 0x9c, 0x2a, 0x64, 0x06,
-	0x71, 0x94, 0x18, 0xba, 0x89, 0x10, 0x6b, 0xa5, 0xc4, 0x31, 0xc4, 0x21, 0xa6, 0x3b, 0x71, 0x44,
-	0xb1, 0x81, 0x64, 0x0a, 0x92, 0x92, 0xd8, 0xc0, 0x3e, 0x35, 0x06, 0x04, 0x00, 0x00, 0xff, 0xff,
-	0xb3, 0xdb, 0x00, 0x4e, 0x16, 0x01, 0x00, 0x00,
+	0x09, 0xca, 0x53, 0xd2, 0xe2, 0x12, 0x70, 0x49, 0x4d, 0xce, 0xcf, 0x2d, 0xc8, 0x2f, 0x4e, 0x85,
+	0x99, 0x2e, 0xc6, 0xc5, 0x96, 0x57, 0x9a, 0x9b, 0x94, 0x5a, 0x04, 0x53, 0x0b, 0xe1, 0x29, 0x69,
+	0x73, 0x09, 0x22, 0xa9, 0xc5, 0x6f, 0xb0, 0xd1, 0x74, 0x46, 0x2e, 0x41, 0x67, 0xb8, 0xbb, 0x82,
+	0x53, 0x8b, 0xca, 0x32, 0x93, 0x53, 0x85, 0xcc, 0x20, 0xbe, 0x16, 0x43, 0x77, 0x32, 0xc4, 0x66,
+	0x29, 0x71, 0x0c, 0x71, 0xa8, 0x2d, 0x5e, 0x5c, 0x9c, 0x70, 0xab, 0x85, 0x64, 0x90, 0x55, 0xa1,
+	0xbb, 0x5e, 0x4a, 0x16, 0x87, 0x2c, 0xc4, 0x24, 0x03, 0x46, 0x27, 0x8e, 0x28, 0x36, 0x90, 0x8a,
+	0x82, 0xa4, 0x24, 0x36, 0x70, 0xb4, 0x18, 0x03, 0x02, 0x00, 0x00, 0xff, 0xff, 0x0a, 0x4c, 0x68,
+	0x41, 0xc3, 0x01, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -183,74 +267,138 @@ var _ grpc.ClientConn
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion4
 
-// SumServiceClient is the client API for SumService service.
+// CalculatorServiceClient is the client API for CalculatorService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type SumServiceClient interface {
+type CalculatorServiceClient interface {
 	Sum(ctx context.Context, in *SumRequest, opts ...grpc.CallOption) (*SumResponse, error)
+	Decompose(ctx context.Context, in *DecomposeRequest, opts ...grpc.CallOption) (CalculatorService_DecomposeClient, error)
 }
 
-type sumServiceClient struct {
+type calculatorServiceClient struct {
 	cc *grpc.ClientConn
 }
 
-func NewSumServiceClient(cc *grpc.ClientConn) SumServiceClient {
-	return &sumServiceClient{cc}
+func NewCalculatorServiceClient(cc *grpc.ClientConn) CalculatorServiceClient {
+	return &calculatorServiceClient{cc}
 }
 
-func (c *sumServiceClient) Sum(ctx context.Context, in *SumRequest, opts ...grpc.CallOption) (*SumResponse, error) {
+func (c *calculatorServiceClient) Sum(ctx context.Context, in *SumRequest, opts ...grpc.CallOption) (*SumResponse, error) {
 	out := new(SumResponse)
-	err := c.cc.Invoke(ctx, "/calculator.SumService/Sum", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/calculator.CalculatorService/Sum", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// SumServiceServer is the server API for SumService service.
-type SumServiceServer interface {
+func (c *calculatorServiceClient) Decompose(ctx context.Context, in *DecomposeRequest, opts ...grpc.CallOption) (CalculatorService_DecomposeClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_CalculatorService_serviceDesc.Streams[0], "/calculator.CalculatorService/Decompose", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &calculatorServiceDecomposeClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type CalculatorService_DecomposeClient interface {
+	Recv() (*DecomposeResponse, error)
+	grpc.ClientStream
+}
+
+type calculatorServiceDecomposeClient struct {
+	grpc.ClientStream
+}
+
+func (x *calculatorServiceDecomposeClient) Recv() (*DecomposeResponse, error) {
+	m := new(DecomposeResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+// CalculatorServiceServer is the server API for CalculatorService service.
+type CalculatorServiceServer interface {
 	Sum(context.Context, *SumRequest) (*SumResponse, error)
+	Decompose(*DecomposeRequest, CalculatorService_DecomposeServer) error
 }
 
-// UnimplementedSumServiceServer can be embedded to have forward compatible implementations.
-type UnimplementedSumServiceServer struct {
+// UnimplementedCalculatorServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedCalculatorServiceServer struct {
 }
 
-func (*UnimplementedSumServiceServer) Sum(ctx context.Context, req *SumRequest) (*SumResponse, error) {
+func (*UnimplementedCalculatorServiceServer) Sum(ctx context.Context, req *SumRequest) (*SumResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Sum not implemented")
 }
-
-func RegisterSumServiceServer(s *grpc.Server, srv SumServiceServer) {
-	s.RegisterService(&_SumService_serviceDesc, srv)
+func (*UnimplementedCalculatorServiceServer) Decompose(req *DecomposeRequest, srv CalculatorService_DecomposeServer) error {
+	return status.Errorf(codes.Unimplemented, "method Decompose not implemented")
 }
 
-func _SumService_Sum_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func RegisterCalculatorServiceServer(s *grpc.Server, srv CalculatorServiceServer) {
+	s.RegisterService(&_CalculatorService_serviceDesc, srv)
+}
+
+func _CalculatorService_Sum_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SumRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SumServiceServer).Sum(ctx, in)
+		return srv.(CalculatorServiceServer).Sum(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/calculator.SumService/Sum",
+		FullMethod: "/calculator.CalculatorService/Sum",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SumServiceServer).Sum(ctx, req.(*SumRequest))
+		return srv.(CalculatorServiceServer).Sum(ctx, req.(*SumRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-var _SumService_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "calculator.SumService",
-	HandlerType: (*SumServiceServer)(nil),
+func _CalculatorService_Decompose_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(DecomposeRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(CalculatorServiceServer).Decompose(m, &calculatorServiceDecomposeServer{stream})
+}
+
+type CalculatorService_DecomposeServer interface {
+	Send(*DecomposeResponse) error
+	grpc.ServerStream
+}
+
+type calculatorServiceDecomposeServer struct {
+	grpc.ServerStream
+}
+
+func (x *calculatorServiceDecomposeServer) Send(m *DecomposeResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+var _CalculatorService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "calculator.CalculatorService",
+	HandlerType: (*CalculatorServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Sum",
-			Handler:    _SumService_Sum_Handler,
+			Handler:    _CalculatorService_Sum_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "Decompose",
+			Handler:       _CalculatorService_Decompose_Handler,
+			ServerStreams: true,
+		},
+	},
 	Metadata: "calculator/calculator_pb/calculator.proto",
 }
