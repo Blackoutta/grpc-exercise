@@ -7,6 +7,7 @@ import (
 	"learnings/grpc/errors"
 	"learnings/grpc/greet/greetpb"
 	"log"
+	"sync"
 	"time"
 
 	"google.golang.org/grpc"
@@ -25,7 +26,8 @@ func main() {
 	// invoking grpc calls
 	// doUnary(c)
 	// doServerStream(c)
-	doClientStream(c)
+	// doClientStream(c)
+	doBiDirectionalStream(c)
 }
 
 func doUnary(c greetpb.GreetServiceClient) {
@@ -110,4 +112,69 @@ func doClientStream(c greetpb.GreetServiceClient) {
 	res, err := stream.CloseAndRecv()
 	errors.HandleError("error while receiving response from LongGreet", err)
 	fmt.Printf("LongGreet Response: %v\n", res.GetResult())
+}
+
+func doBiDirectionalStream(c greetpb.GreetServiceClient) {
+	var wg sync.WaitGroup
+	fmt.Println("Starting to do Bi-directional Streaming RPC!")
+
+	// create a stream by invoking the client
+	stream, err := c.GreetEveryone(context.Background())
+	errors.HandleError("error while calling GreetEveryone RPC", err)
+
+	wg.Add(1)
+
+	requests := []*greetpb.GreetEveryoneRequest{
+		&greetpb.GreetEveryoneRequest{
+			Greeting: &greetpb.Greeting{
+				FirstName: "Yang",
+			},
+		},
+		&greetpb.GreetEveryoneRequest{
+			Greeting: &greetpb.Greeting{
+				FirstName: "Rin",
+			},
+		},
+		&greetpb.GreetEveryoneRequest{
+			Greeting: &greetpb.Greeting{
+				FirstName: "Lewis",
+			},
+		},
+		&greetpb.GreetEveryoneRequest{
+			Greeting: &greetpb.Greeting{
+				FirstName: "Ben",
+			},
+		},
+		&greetpb.GreetEveryoneRequest{
+			Greeting: &greetpb.Greeting{
+				FirstName: "Shane",
+			},
+		},
+	}
+
+	// send a bunch of messages to the server
+	go func() {
+		for _, req := range requests {
+			fmt.Printf("Sending message: %v\n", req)
+			err := stream.Send(req)
+			errors.HandleError("error while sending message to server", err)
+			time.Sleep(time.Second)
+		}
+		err := stream.CloseSend()
+		errors.HandleError("error while closing sending to server", err)
+	}()
+	// receive a bunch of messages from the server
+	go func() {
+		for {
+			res, err := stream.Recv()
+			if err == io.EOF {
+				wg.Done()
+				return
+			}
+			errors.HandleError("error while receiving response from server", err)
+			fmt.Printf("Received: %v\n", res.GetResult())
+		}
+	}()
+	// block until everything is done
+	wg.Wait()
 }

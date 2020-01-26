@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"time"
 
+	"learnings/grpc/errors"
 	"learnings/grpc/greet/greetpb"
 
 	"google.golang.org/grpc"
@@ -57,6 +58,21 @@ func (s *server) LongGreet(stream greetpb.GreetService_LongGreetServer) error {
 		}
 		firstName := req.GetGreeting().GetFirstName()
 		result += firstName + "! "
+	}
+}
+
+func (s *server) GreetEveryone(stream greetpb.GreetService_GreetEveryoneServer) error {
+	fmt.Println("GreetEveryone function was invoked!")
+	for {
+		req, err := stream.Recv()
+		if err == io.EOF {
+			return nil
+		}
+		errors.HandleError("error while receiving req from the client", err)
+		firstName := req.GetGreeting().GetFirstName()
+		result := "Hello " + firstName
+		sendErr := stream.Send(&greetpb.GreetEveryoneResponse{Result: result})
+		errors.HandleError("error while sending GreetEveryone response", sendErr)
 	}
 }
 
