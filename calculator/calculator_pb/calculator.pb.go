@@ -227,12 +227,92 @@ func (m *DecomposeResponse) GetResult() int64 {
 	return 0
 }
 
+type AverageRequest struct {
+	Number               int32    `protobuf:"varint,1,opt,name=number,proto3" json:"number,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *AverageRequest) Reset()         { *m = AverageRequest{} }
+func (m *AverageRequest) String() string { return proto.CompactTextString(m) }
+func (*AverageRequest) ProtoMessage()    {}
+func (*AverageRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5b44e1cc294e667d, []int{5}
+}
+
+func (m *AverageRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_AverageRequest.Unmarshal(m, b)
+}
+func (m *AverageRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_AverageRequest.Marshal(b, m, deterministic)
+}
+func (m *AverageRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AverageRequest.Merge(m, src)
+}
+func (m *AverageRequest) XXX_Size() int {
+	return xxx_messageInfo_AverageRequest.Size(m)
+}
+func (m *AverageRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_AverageRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_AverageRequest proto.InternalMessageInfo
+
+func (m *AverageRequest) GetNumber() int32 {
+	if m != nil {
+		return m.Number
+	}
+	return 0
+}
+
+type AverageResponse struct {
+	Result               float32  `protobuf:"fixed32,1,opt,name=result,proto3" json:"result,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *AverageResponse) Reset()         { *m = AverageResponse{} }
+func (m *AverageResponse) String() string { return proto.CompactTextString(m) }
+func (*AverageResponse) ProtoMessage()    {}
+func (*AverageResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5b44e1cc294e667d, []int{6}
+}
+
+func (m *AverageResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_AverageResponse.Unmarshal(m, b)
+}
+func (m *AverageResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_AverageResponse.Marshal(b, m, deterministic)
+}
+func (m *AverageResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AverageResponse.Merge(m, src)
+}
+func (m *AverageResponse) XXX_Size() int {
+	return xxx_messageInfo_AverageResponse.Size(m)
+}
+func (m *AverageResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_AverageResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_AverageResponse proto.InternalMessageInfo
+
+func (m *AverageResponse) GetResult() float32 {
+	if m != nil {
+		return m.Result
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*Sum)(nil), "calculator.Sum")
 	proto.RegisterType((*SumRequest)(nil), "calculator.SumRequest")
 	proto.RegisterType((*SumResponse)(nil), "calculator.SumResponse")
 	proto.RegisterType((*DecomposeRequest)(nil), "calculator.DecomposeRequest")
 	proto.RegisterType((*DecomposeResponse)(nil), "calculator.DecomposeResponse")
+	proto.RegisterType((*AverageRequest)(nil), "calculator.AverageRequest")
+	proto.RegisterType((*AverageResponse)(nil), "calculator.AverageResponse")
 }
 
 func init() {
@@ -240,23 +320,25 @@ func init() {
 }
 
 var fileDescriptor_5b44e1cc294e667d = []byte{
-	// 245 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xd2, 0x4c, 0x4e, 0xcc, 0x49,
-	0x2e, 0xcd, 0x49, 0x2c, 0xc9, 0x2f, 0xd2, 0x47, 0x30, 0xe3, 0x0b, 0x92, 0x90, 0x78, 0x7a, 0x05,
-	0x45, 0xf9, 0x25, 0xf9, 0x42, 0x5c, 0x08, 0x11, 0x25, 0x5d, 0x2e, 0xe6, 0xe0, 0xd2, 0x5c, 0x21,
-	0x21, 0x2e, 0x96, 0xbc, 0xd2, 0x5c, 0x43, 0x09, 0x46, 0x05, 0x46, 0x0d, 0xe6, 0x20, 0x30, 0x1b,
-	0x2a, 0x66, 0x24, 0xc1, 0x04, 0x17, 0x33, 0x52, 0xd2, 0xe7, 0xe2, 0x0a, 0x2e, 0xcd, 0x0d, 0x4a,
-	0x2d, 0x2c, 0x4d, 0x2d, 0x2e, 0x11, 0x52, 0xe4, 0x62, 0x2e, 0x2e, 0xcd, 0x05, 0x6b, 0xe2, 0x36,
-	0xe2, 0xd7, 0x43, 0xb2, 0x08, 0xa4, 0x08, 0x24, 0xa7, 0xa4, 0xca, 0xc5, 0x0d, 0xd6, 0x50, 0x5c,
-	0x90, 0x9f, 0x57, 0x9c, 0x2a, 0x24, 0xc6, 0xc5, 0x56, 0x94, 0x5a, 0x5c, 0x9a, 0x53, 0x02, 0xb5,
-	0x09, 0xca, 0x53, 0xd2, 0xe2, 0x12, 0x70, 0x49, 0x4d, 0xce, 0xcf, 0x2d, 0xc8, 0x2f, 0x4e, 0x85,
-	0x99, 0x2e, 0xc6, 0xc5, 0x96, 0x57, 0x9a, 0x9b, 0x94, 0x5a, 0x04, 0x53, 0x0b, 0xe1, 0x29, 0x69,
-	0x73, 0x09, 0x22, 0xa9, 0xc5, 0x6f, 0xb0, 0xd1, 0x74, 0x46, 0x2e, 0x41, 0x67, 0xb8, 0xbb, 0x82,
-	0x53, 0x8b, 0xca, 0x32, 0x93, 0x53, 0x85, 0xcc, 0x20, 0xbe, 0x16, 0x43, 0x77, 0x32, 0xc4, 0x66,
-	0x29, 0x71, 0x0c, 0x71, 0xa8, 0x2d, 0x5e, 0x5c, 0x9c, 0x70, 0xab, 0x85, 0x64, 0x90, 0x55, 0xa1,
-	0xbb, 0x5e, 0x4a, 0x16, 0x87, 0x2c, 0xc4, 0x24, 0x03, 0x46, 0x27, 0x8e, 0x28, 0x36, 0x90, 0x8a,
-	0x82, 0xa4, 0x24, 0x36, 0x70, 0xb4, 0x18, 0x03, 0x02, 0x00, 0x00, 0xff, 0xff, 0x0a, 0x4c, 0x68,
-	0x41, 0xc3, 0x01, 0x00, 0x00,
+	// 288 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x92, 0x41, 0x4b, 0xfb, 0x40,
+	0x10, 0xc5, 0x49, 0xf3, 0xff, 0x47, 0x9d, 0x82, 0xb5, 0x7b, 0x88, 0x25, 0x2a, 0x68, 0x40, 0x48,
+	0x15, 0x5b, 0x8d, 0xe0, 0x5d, 0xed, 0xc9, 0x63, 0x73, 0xf3, 0x22, 0x49, 0x18, 0x44, 0xc8, 0x66,
+	0xd7, 0xdd, 0x6c, 0xbf, 0xad, 0xdf, 0x45, 0x92, 0xdd, 0x6c, 0xd7, 0xda, 0xe2, 0x6d, 0x67, 0xe6,
+	0xcd, 0xef, 0x31, 0x8f, 0x85, 0x69, 0x99, 0x57, 0xa5, 0xaa, 0xf2, 0x86, 0x89, 0xf9, 0xfa, 0xf9,
+	0xc6, 0x0b, 0xa7, 0x9a, 0x71, 0xc1, 0x1a, 0x46, 0x60, 0xdd, 0x89, 0x6f, 0xc0, 0xcf, 0x14, 0x25,
+	0x04, 0xfe, 0xd5, 0x8a, 0xde, 0x4d, 0xbc, 0x73, 0x2f, 0xf1, 0x97, 0xdd, 0xdb, 0xf4, 0xd2, 0xc9,
+	0xc0, 0xf6, 0xd2, 0x78, 0x0e, 0x90, 0x29, 0xba, 0xc4, 0x4f, 0x85, 0xb2, 0x21, 0x17, 0xe0, 0x4b,
+	0x45, 0xbb, 0xa5, 0x61, 0x3a, 0x9a, 0x39, 0x46, 0xad, 0xa8, 0x9d, 0xc5, 0x97, 0x30, 0xec, 0x16,
+	0x24, 0x67, 0xb5, 0x44, 0x12, 0x42, 0x20, 0x50, 0xaa, 0xaa, 0x31, 0x4e, 0xa6, 0x8a, 0xaf, 0xe0,
+	0x68, 0x81, 0x25, 0xa3, 0x9c, 0x49, 0xec, 0xe9, 0x21, 0x04, 0xb5, 0xa2, 0x05, 0x8a, 0x5e, 0xab,
+	0xab, 0xf8, 0x1a, 0xc6, 0x8e, 0xf6, 0x0f, 0x70, 0x02, 0x87, 0x8f, 0x2b, 0x14, 0xf9, 0xfb, 0x0e,
+	0xec, 0x7f, 0x8b, 0x9d, 0xc2, 0xc8, 0x2a, 0xb7, 0x42, 0x07, 0x3d, 0x34, 0xfd, 0xf2, 0x60, 0xfc,
+	0x6c, 0x8f, 0xcd, 0x50, 0xac, 0x3e, 0x4a, 0x24, 0x0f, 0x3a, 0xca, 0x70, 0x33, 0x07, 0xed, 0x1b,
+	0x1d, 0xff, 0xea, 0x1b, 0x97, 0x17, 0x38, 0xb0, 0xf7, 0x90, 0x53, 0x57, 0xb5, 0x19, 0x49, 0x74,
+	0xb6, 0x63, 0xaa, 0x49, 0xb7, 0x1e, 0x59, 0xc0, 0x9e, 0x39, 0x82, 0x44, 0xae, 0xf6, 0x67, 0x06,
+	0xd1, 0xc9, 0xd6, 0x99, 0xa6, 0x24, 0xde, 0xd3, 0xfe, 0x6b, 0xd0, 0xce, 0x79, 0x51, 0x04, 0xdd,
+	0x8f, 0xb9, 0xff, 0x0e, 0x00, 0x00, 0xff, 0xff, 0x21, 0x0c, 0x36, 0x58, 0x5e, 0x02, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -273,6 +355,7 @@ const _ = grpc.SupportPackageIsVersion4
 type CalculatorServiceClient interface {
 	Sum(ctx context.Context, in *SumRequest, opts ...grpc.CallOption) (*SumResponse, error)
 	Decompose(ctx context.Context, in *DecomposeRequest, opts ...grpc.CallOption) (CalculatorService_DecomposeClient, error)
+	Average(ctx context.Context, opts ...grpc.CallOption) (CalculatorService_AverageClient, error)
 }
 
 type calculatorServiceClient struct {
@@ -324,10 +407,45 @@ func (x *calculatorServiceDecomposeClient) Recv() (*DecomposeResponse, error) {
 	return m, nil
 }
 
+func (c *calculatorServiceClient) Average(ctx context.Context, opts ...grpc.CallOption) (CalculatorService_AverageClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_CalculatorService_serviceDesc.Streams[1], "/calculator.CalculatorService/Average", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &calculatorServiceAverageClient{stream}
+	return x, nil
+}
+
+type CalculatorService_AverageClient interface {
+	Send(*AverageRequest) error
+	CloseAndRecv() (*AverageResponse, error)
+	grpc.ClientStream
+}
+
+type calculatorServiceAverageClient struct {
+	grpc.ClientStream
+}
+
+func (x *calculatorServiceAverageClient) Send(m *AverageRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *calculatorServiceAverageClient) CloseAndRecv() (*AverageResponse, error) {
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	m := new(AverageResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // CalculatorServiceServer is the server API for CalculatorService service.
 type CalculatorServiceServer interface {
 	Sum(context.Context, *SumRequest) (*SumResponse, error)
 	Decompose(*DecomposeRequest, CalculatorService_DecomposeServer) error
+	Average(CalculatorService_AverageServer) error
 }
 
 // UnimplementedCalculatorServiceServer can be embedded to have forward compatible implementations.
@@ -339,6 +457,9 @@ func (*UnimplementedCalculatorServiceServer) Sum(ctx context.Context, req *SumRe
 }
 func (*UnimplementedCalculatorServiceServer) Decompose(req *DecomposeRequest, srv CalculatorService_DecomposeServer) error {
 	return status.Errorf(codes.Unimplemented, "method Decompose not implemented")
+}
+func (*UnimplementedCalculatorServiceServer) Average(srv CalculatorService_AverageServer) error {
+	return status.Errorf(codes.Unimplemented, "method Average not implemented")
 }
 
 func RegisterCalculatorServiceServer(s *grpc.Server, srv CalculatorServiceServer) {
@@ -384,6 +505,32 @@ func (x *calculatorServiceDecomposeServer) Send(m *DecomposeResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
+func _CalculatorService_Average_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(CalculatorServiceServer).Average(&calculatorServiceAverageServer{stream})
+}
+
+type CalculatorService_AverageServer interface {
+	SendAndClose(*AverageResponse) error
+	Recv() (*AverageRequest, error)
+	grpc.ServerStream
+}
+
+type calculatorServiceAverageServer struct {
+	grpc.ServerStream
+}
+
+func (x *calculatorServiceAverageServer) SendAndClose(m *AverageResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *calculatorServiceAverageServer) Recv() (*AverageRequest, error) {
+	m := new(AverageRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 var _CalculatorService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "calculator.CalculatorService",
 	HandlerType: (*CalculatorServiceServer)(nil),
@@ -398,6 +545,11 @@ var _CalculatorService_serviceDesc = grpc.ServiceDesc{
 			StreamName:    "Decompose",
 			Handler:       _CalculatorService_Decompose_Handler,
 			ServerStreams: true,
+		},
+		{
+			StreamName:    "Average",
+			Handler:       _CalculatorService_Average_Handler,
+			ClientStreams: true,
 		},
 	},
 	Metadata: "calculator/calculator_pb/calculator.proto",

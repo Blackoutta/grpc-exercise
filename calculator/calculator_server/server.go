@@ -3,7 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
+	"io"
 	calcpb "learnings/grpc/calculator/calculator_pb"
+	"learnings/grpc/errors"
 	"log"
 	"net"
 	"time"
@@ -42,6 +44,25 @@ func (s *server) Decompose(req *calcpb.DecomposeRequest, stream calcpb.Calculato
 		k++
 	}
 	return nil
+}
+
+func (s *server) Average(stream calcpb.CalculatorService_AverageServer) error {
+	fmt.Println("Average function was invoked! ")
+	var sum int32
+	var count int32
+	for {
+		req, err := stream.Recv()
+		if err == io.EOF {
+			result := float32(sum) / float32(count)
+			resp := &calcpb.AverageResponse{
+				Result: result,
+			}
+			return stream.SendAndClose(resp)
+		}
+		errors.HandleError("error while receiving req from the client stream", err)
+		sum += req.GetNumber()
+		count++
+	}
 }
 
 func main() {

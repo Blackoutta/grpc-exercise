@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	calcpb "learnings/grpc/calculator/calculator_pb"
+	"learnings/grpc/errors"
 	"log"
 
 	"google.golang.org/grpc"
@@ -22,7 +23,8 @@ func main() {
 
 	// invoking grpc calls
 	// doUnary(c)
-	doServerStream(c)
+	// doServerStream(c)
+	doClientStream(c)
 }
 
 func doUnary(c calcpb.CalculatorServiceClient) {
@@ -60,4 +62,32 @@ func doServerStream(c calcpb.CalculatorServiceClient) {
 		result := res.GetResult()
 		fmt.Printf("Response from Decompose RPC: %v\n", result)
 	}
+}
+
+func doClientStream(c calcpb.CalculatorServiceClient) {
+	fmt.Println("Starting to do Client Stream RPC!")
+	requests := []*calcpb.AverageRequest{
+		&calcpb.AverageRequest{
+			Number: 1,
+		},
+		&calcpb.AverageRequest{
+			Number: 2,
+		},
+		&calcpb.AverageRequest{
+			Number: 3,
+		},
+		&calcpb.AverageRequest{
+			Number: 4,
+		},
+	}
+	stream, err := c.Average(context.Background())
+	errors.HandleError("error while calling Average RPC", err)
+	for _, req := range requests {
+		fmt.Printf("Sending Average request: %v\n", req)
+		err := stream.Send(req)
+		errors.HandleError("error while sending Average request stream", err)
+	}
+	resp, err := stream.CloseAndRecv()
+	errors.HandleError("error while receiving Average response", err)
+	fmt.Printf("Average Response: %v\n", resp.GetResult())
 }
