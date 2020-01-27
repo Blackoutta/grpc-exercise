@@ -35,7 +35,8 @@ func (s *server) GreetManyTimes(req *greetpb.GreetManyTimesRequest, stream greet
 		res := &greetpb.GreetManyTimesResponse{
 			Result: result,
 		}
-		stream.Send(res)
+		err := stream.Send(res)
+		errors.HandleError("error while sending GreetManyTimes request", err)
 		time.Sleep(time.Second)
 	}
 	return nil

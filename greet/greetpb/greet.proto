@@ -51,4 +51,5 @@ service GreetService{
 
     //Bi-directional Streaming
     rpc GreetEveryone (stream GreetEveryoneRequest) returns (stream GreetEveryoneResponse);
+
 }

@@ -7,6 +7,8 @@ import (
 	calcpb "learnings/grpc/calculator/calculator_pb"
 	"learnings/grpc/errors"
 	"log"
+	"sync"
+	"time"
 
 	"google.golang.org/grpc"
 )
@@ -24,8 +26,10 @@ func main() {
 	// invoking grpc calls
 	// doUnary(c)
 	// doServerStream(c)
-	doClientStream(c)
+	//doClientStream(c)
+	doBiDirectionalStream(c)
 }
+
 
 func doUnary(c calcpb.CalculatorServiceClient) {
 	fmt.Println("Starting to do Unary RPC!")
@@ -90,4 +94,63 @@ func doClientStream(c calcpb.CalculatorServiceClient) {
 	resp, err := stream.CloseAndRecv()
 	errors.HandleError("error while receiving Average response", err)
 	fmt.Printf("Average Response: %v\n", resp.GetResult())
+}
+
+func doBiDirectionalStream(c calcpb.CalculatorServiceClient) {
+	fmt.Println("Starting to do Bi-directional Stream RPC!")
+
+	// get stream
+	stream, err := c.FindMaximum(context.Background())
+	errors.HandleError("error while calling FindMaximum RPC", err)
+
+	requests := []*calcpb.FindMaximumRequest{
+		{
+			Number: 1,
+		},
+		{
+			Number: 6,
+		},
+		{
+			Number: 2,
+		},
+		{
+			Number: 8,
+		},
+		{
+			Number: 5,
+		},
+		{
+			Number: 66,
+		},
+
+	}
+	var wg sync.WaitGroup
+
+	wg.Add(1)
+	// send requests
+	go func() {
+		for _, req := range requests {
+			err := stream.Send(req)
+			errors.HandleError("error while sending requests to server", err)
+			time.Sleep(time.Second)
+		}
+		err := stream.CloseSend()
+		errors.HandleError("error while closing the sending to server", err)
+	}()
+
+	// receive response
+	go func() {
+		for {
+			resp, err := stream.Recv()
+			if err == io.EOF {
+				wg.Done()
+				return
+			}
+			errors.HandleError("error while receiving from server", err)
+			fmt.Printf("FindMaximum Response: %v\n", resp.GetResult())
+		}
+	}()
+
+
+	wg.Wait()
 }

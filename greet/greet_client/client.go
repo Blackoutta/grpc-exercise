@@ -76,27 +76,27 @@ func doClientStream(c greetpb.GreetServiceClient) {
 	fmt.Println("Starting to do Client Streaming RPC!")
 
 	requests := []*greetpb.LongGreetRequest{
-		&greetpb.LongGreetRequest{
+		{
 			Greeting: &greetpb.Greeting{
 				FirstName: "Yang",
 			},
 		},
-		&greetpb.LongGreetRequest{
+		{
 			Greeting: &greetpb.Greeting{
 				FirstName: "Rin",
 			},
 		},
-		&greetpb.LongGreetRequest{
+		{
 			Greeting: &greetpb.Greeting{
 				FirstName: "Lewis",
 			},
 		},
-		&greetpb.LongGreetRequest{
+		{
 			Greeting: &greetpb.Greeting{
 				FirstName: "Ben",
 			},
 		},
-		&greetpb.LongGreetRequest{
+		{
 			Greeting: &greetpb.Greeting{
 				FirstName: "Shane",
 			},
@@ -106,7 +106,8 @@ func doClientStream(c greetpb.GreetServiceClient) {
 	errors.HandleError("error while calling Long Greet", err)
 	for _, req := range requests {
 		fmt.Printf("Sending request: %v\n", req)
-		stream.Send(req)
+		err := stream.Send(req)
+		errors.HandleError("error while sending LongGreet request", err)
 		time.Sleep(100 * time.Microsecond)
 	}
 	res, err := stream.CloseAndRecv()
@@ -125,27 +126,27 @@ func doBiDirectionalStream(c greetpb.GreetServiceClient) {
 	wg.Add(1)
 
 	requests := []*greetpb.GreetEveryoneRequest{
-		&greetpb.GreetEveryoneRequest{
+		{
 			Greeting: &greetpb.Greeting{
 				FirstName: "Yang",
 			},
 		},
-		&greetpb.GreetEveryoneRequest{
+		{
 			Greeting: &greetpb.Greeting{
 				FirstName: "Rin",
 			},
 		},
-		&greetpb.GreetEveryoneRequest{
+		{
 			Greeting: &greetpb.Greeting{
 				FirstName: "Lewis",
 			},
 		},
-		&greetpb.GreetEveryoneRequest{
+		{
 			Greeting: &greetpb.Greeting{
 				FirstName: "Ben",
 			},
 		},
-		&greetpb.GreetEveryoneRequest{
+		{
 			Greeting: &greetpb.Greeting{
 				FirstName: "Shane",
 			},
