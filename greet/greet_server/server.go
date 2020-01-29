@@ -3,6 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/status"
 	"io"
 	"log"
 	"net"
@@ -77,13 +80,39 @@ func (s *server) GreetEveryone(stream greetpb.GreetService_GreetEveryoneServer) 
 	}
 }
 
+func (s *server) GreetWithDeadline(ctx context.Context, req *greetpb.GreetWithDeadlineRequest) (*greetpb.GreetWithDeadlineResponse, error) {
+	fmt.Printf("GreetWithDeadline function was invoked with %v\n", req)
+
+	for i := 0; i < 3; i++ {
+		time.Sleep(time.Second)
+		if ctx.Err() == context.Canceled {
+			// the client canceled the request
+			fmt.Println("The client canceled the request.")
+			return nil, status.Errorf(codes.DeadlineExceeded, "The client canceled the request.")
+		}
+	}
+	firstName := req.GetGreeting().GetFirstName()
+	result := "Hello " + firstName
+	res := &greetpb.GreetWithDeadlineResponse{
+		Result: result,
+	}
+	return res, nil
+}
+
 func main() {
 	// port binding and GRPC server initialization
 	lis, err := net.Listen("tcp", "0.0.0.0:50051")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
-	s := grpc.NewServer()
+
+	certFile := "ssl/server.crt"
+	keyFile := "ssl/server.pem"
+	creds, sslErr := credentials.NewServerTLSFromFile(certFile, keyFile)
+	errors.HandleError("Failed loading certificates", sslErr)
+
+	opts := grpc.Creds(creds)
+	s := grpc.NewServer(opts)
 
 	// adding handlers
 	greetpb.RegisterGreetServiceServer(s, &server{})

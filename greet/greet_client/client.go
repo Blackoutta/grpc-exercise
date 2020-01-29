@@ -3,6 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/status"
 	"io"
 	"learnings/grpc/errors"
 	"learnings/grpc/greet/greetpb"
@@ -16,7 +19,13 @@ import (
 func main() {
 	// boilerplate
 	fmt.Println("hello I'm a grpc client!")
-	cc, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
+
+	certFile := "ssl/ca.crt" // certificate authority trust certificate
+	creds, sslErr := credentials.NewClientTLSFromFile(certFile, "")
+	errors.HandleError("error while loading ca trust certificate", sslErr)
+
+	opts := grpc.WithTransportCredentials(creds)
+	cc, err := grpc.Dial("localhost:50051", opts)
 	defer cc.Close()
 	if err != nil {
 		log.Fatalln("could not connect:", err)
@@ -24,11 +33,43 @@ func main() {
 	c := greetpb.NewGreetServiceClient(cc)
 
 	// invoking grpc calls
-	// doUnary(c)
+	doUnary(c)
 	// doServerStream(c)
 	// doClientStream(c)
-	doBiDirectionalStream(c)
+	//doBiDirectionalStream(c)
+	//doUnaryWithDeadline(c, 5) // should complete
+	//doUnaryWithDeadline(c, 1) // should timeout
+
 }
+
+func doUnaryWithDeadline(c greetpb.GreetServiceClient, timeout time.Duration) {
+	fmt.Println("Starting to do Unary RPC with deadline!")
+	req := &greetpb.GreetWithDeadlineRequest{
+		Greeting: &greetpb.Greeting{
+			FirstName: "yang",
+			LastName:  "hu",
+		},
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), timeout * time.Second)
+	defer cancel()
+	res, err := c.GreetWithDeadline(ctx, req)
+	if err != nil {
+		statusErr, ok := status.FromError(err)
+		if ok {
+			if statusErr.Code() == codes.DeadlineExceeded {
+				fmt.Println("Timeout was hit! Deadline was exceeded!")
+				fmt.Printf("error message: %v\n", statusErr.Message())
+			} else {
+				fmt.Printf("unexpected error: %v", statusErr)
+			}
+			return
+		} else {
+			log.Fatalf("fatal error while calling Greet RPC: %v", statusErr)
+		}
+	}
+	log.Printf("Response from Greet: %v", res.GetResult())
+}
+
 
 func doUnary(c greetpb.GreetServiceClient) {
 	fmt.Println("Starting to do Unary RPC!")
@@ -42,7 +83,7 @@ func doUnary(c greetpb.GreetServiceClient) {
 	if err != nil {
 		log.Printf("error while calling Greet RPC: %v", err)
 	}
-	log.Printf("Response from Greet: %v", res.Result)
+	log.Printf("Response from Greet: %v", res.GetResult())
 }
 
 func doServerStream(c greetpb.GreetServiceClient) {
